@@ -17,7 +17,7 @@ def resource_path(relative_path):
 
 
 
-PROFILE_IMG = resource_path("assets/Ashish.jpg")
+PROFILE_IMG = resource_path("assets/logo2.png")
 #PROFILE_IMG = "assets/profile.jpg"
 
 def search_students(query):
@@ -84,11 +84,11 @@ class DefaultPage(tk.Frame):
 
 
         # Name
-        tk.Label(card, text="ASHISH BISWAS", font=("Segoe UI", 16, "bold"),
+        tk.Label(card, text="HOSTEL & RENT", font=("Segoe UI", 16, "bold"),
                 bg="#f9f9f9", fg="#2c3e50").pack(pady=4)
 
         # Title
-        tk.Label(card, text="Director of Hostel Name", font=("Segoe UI", 11, "italic"),
+        tk.Label(card, text="Director of ASHISH", font=("Segoe UI", 11, "italic"),
                 bg="#f9f9f9", fg="#7f8c8d").pack()
 
         # Decorative line

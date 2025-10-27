@@ -68,9 +68,39 @@ def create_tables_if_not_exist():
                 FOREIGN KEY(shop_no) REFERENCES shops(shop_no)
             )
         """)
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS ads (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            type TEXT,
+            title TEXT,
+            rent TEXT,
+            location TEXT,
+            description TEXT,
+            image_path TEXT
+        )
+    """)
+
+    c.execute("""
+        CREATE TABLE IF NOT EXISTS bookings (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    ad_id INTEGER,
+                    name TEXT,
+                    phone TEXT,
+                    email TEXT,
+                    booking_date TEXT DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (ad_id) REFERENCES ads(id)
+                )
+                """)
+    c.execute("PRAGMA table_info(bookings)")
+    columns = [col[1] for col in c.fetchall()]
+    if "booking_date" not in columns:
+            c.execute("ALTER TABLE bookings ADD COLUMN booking_date TEXT")
+            print("✅ Added booking_date column")
+
 
     conn.commit()
     conn.close()
+    
 
     print("Tables created or already exist.")
 
