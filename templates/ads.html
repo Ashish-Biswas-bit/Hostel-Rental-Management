@@ -2,41 +2,270 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rent Ads</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HomeFinder - Find Your Perfect Home</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <meta name="description" content="Find hostels, flats and student housing for rent — search, browse, and book with HomeFinder.">
 </head>
 <body>
-    <h1>🏠 Rent Ads</h1>
-    <div id="adsContainer"></div>
+    <header class="mainHeader">
+        <nav class="navbar">
+            <div class="container">
+                <a href="#" class="logo">🏠 HomeFinder</a>
+                <div class="navLinks">
+                    <a href="#" class="active">Home</a>
+                    <a href="#rent">Rent</a>
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="navActions">
+                    <a href="#" id="listPropertyBtn" class="ctaBtn">List Property</a>
+                </div>
+                <button class="menuBtn"><i class="fas fa-bars"></i></button>
+            </div>
+        </nav>
 
-<div id="modal">
-  <div class="modalContent">
-    <span id="closeModal">&times;</span>
-    <img id="modalImage" src="" alt="">
-    <div class="modalText">
-        <h2 id="modalTitle"></h2>
-        <p id="modalRent"></p>
-        <p id="modalDescription"></p>
-        
-        <!-- Booking Form -->
-        <form id="bookingForm">
-            <h3>Booking Form</h3>
-            <input type="text" id="name" placeholder="Your Name" required><br>
-            <input type="email" id="email" placeholder="Your Email" required><br>
-            <input type="text" id="phone" placeholder="Phone Number" required><br>
-            <textarea id="message" placeholder="Message (optional)"></textarea><br>
-            <button type="submit">Submit Booking</button>
-        </form>
+        <div class="hero" id="hero">
+            <div class="hero-slideshow">
+                <div class="slide slide-1" aria-hidden="true"></div>
+                <div class="slide slide-2" aria-hidden="true"></div>
+                <div class="slide slide-3" aria-hidden="true"></div>
+                <div class="slide slide-4" aria-hidden="true"></div>
+                <div class="slide slide-5" aria-hidden="true"></div>
+                <div class="slide slide-6" aria-hidden="true"></div>
+                <div class="slide slide-7" aria-hidden="true"></div>
+                <div class="slide slide-8" aria-hidden="true"></div>
+                <div class="slide slide-9" aria-hidden="true"></div>
+            </div>
+            <div class="hero-overlay"></div>
+            <div class="container">
+                <h1>Find Your Perfect Home</h1>
+                <p>Discover comfortable hostels and modern flats for rent</p>
+                <div class="searchBox">
+                    <input id="searchInput" class="search" type="search" placeholder="Search by location, title or features">
+                    <select id="filterSelect" class="filter">
+                        <option value="">All Properties</option>
+                        <option value="hostel">Hostel</option>
+                        <option value="flat">Flat</option>
+                    </select>
+                    <select id="genderSelect" class="filter">
+                        <option value="">Any Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <button class="searchBtn"><i class="fas fa-search"></i> Search</button>
+                </div>
+                <div class="hero-ctas">
+                    <a href="#rent" class="btn btn-primary">Browse Listings</a>
+                    <a href="/post_admin" class="btn btn-outline">Post an Ad</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="features">
+        <div class="container">
+            <div class="featureGrid">
+                <div class="featureCard">
+                    <i class="fas fa-home"></i>
+                    <h3>Quality Homes</h3>
+                    <p>Carefully vetted properties for your comfort</p>
+                </div>
+                <div class="featureCard">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Quick Booking</h3>
+                    <p>Easy and fast booking process</p>
+                </div>
+                <div class="featureCard">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Safe & Secure</h3>
+                    <p>Verified listings and secure transactions</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simple property directory: image + location -->
+    <section id="listingsGallery" class="listingsGallery hidden">
+        <div class="container">
+            <div class="sectionHeader">
+                <h2>All Properties</h2>
+                <p>Quick directory: images and locations</p>
+            </div>
+            <div id="galleryGrid" class="galleryGrid" aria-live="polite">
+                <!-- Thumbnails injected by ui.js -->
+            </div>
+        </div>
+    </section>
+
+    <section id="rent" class="rentSection">
+        <div class="container">
+            <div class="sectionHeader">
+                <h2>Available Properties</h2>
+                <p>Find the perfect place that suits your needs</p>
+            </div>
+            <section id="adsContainer" class="adsGrid" aria-live="polite">
+                <!-- Cards inserted by script.js -->
+            </section>
+        </div>
+    </section>
+
+    <section id="about" class="aboutSection">
+        <div class="container">
+            <div class="sectionHeader">
+                <h2>About Us</h2>
+                <p>Your trusted partner in finding the perfect accommodation</p>
+            </div>
+            <div class="aboutContent">
+                <div class="aboutText">
+                    <h3>Why Choose Us?</h3>
+                    <ul class="benefits">
+                        <li><i class="fas fa-check"></i> Wide selection of properties</li>
+                        <li><i class="fas fa-check"></i> Verified listings only</li>
+                        <li><i class="fas fa-check"></i> Competitive prices</li>
+                        <li><i class="fas fa-check"></i> 24/7 customer support</li>
+                    </ul>
+                    <p class="aboutDescription">
+                        We are committed to helping students and professionals find their ideal living space.
+                        With years of experience in the rental market, we understand your needs and strive to
+                        provide the best accommodation solutions.
+                    </p>
+                </div>
+                <div class="statsContainer">
+                    <div class="statItem">
+                        <span class="statNumber">500+</span>
+                        <span class="statLabel">Happy Customers</span>
+                    </div>
+                    <div class="statItem">
+                        <span class="statNumber">100+</span>
+                        <span class="statLabel">Properties Listed</span>
+                    </div>
+                    <div class="statItem">
+                        <span class="statNumber">4.8</span>
+                        <span class="statLabel">User Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contactSection">
+        <div class="container">
+            <div class="sectionHeader">
+                <h2>Contact Us</h2>
+                <p>Get in touch with our support team</p>
+            </div>
+            <div class="contactGrid">
+                <div class="contactInfo">
+                    <div class="contactItem">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p>34 B Sonadanga, Khulna</p>
+                        </div>
+                    </div>
+                    <div class="contactItem">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+880 17445-02112</p>
+                        </div>
+                    </div>
+                    <div class="contactItem">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>hostel2rent@homefinder.com</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contactForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="primaryBtn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footerGrid">
+                <div class="footerCol">
+                    <h3>🏠 HomeFinder</h3>
+                    <p>Finding you the perfect place to call home.</p>
+                    <div class="socialLinks">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footerCol">
+                    <h4>Quick Links</h4>
+                    <a href="#">Home</a>
+                    <a href="#rent">Available Rentals</a>
+                    <a href="#about">About Us</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="footerCol">
+                    <h4>Property Types</h4>
+                    <a href="#">Hostels</a>
+                    <a href="#">Flats</a>
+                    <a href="#">Student Housing</a>
+                </div>
+                <div class="footerCol">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe for updates on new properties</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="Your email">
+                        <button class="primaryBtn">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footerBottom">
+                <p>&copy; 2025 HomeFinder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal (kept IDs to remain compatible with existing script.js) -->
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="modalContent">
+        <button id="closeModal" class="closeBtn" aria-label="Close modal">&times;</button>
+        <img id="modalImage" src="" alt="Ad image" class="modalImage">
+        <div class="modalText">
+            <h2 id="modalTitle"></h2>
+            <p id="modalRent" class="price"></p>
+            <p id="modalDescription" class="description"></p>
+            <p id="modalContact" class="contactInfo"></p>
+
+            <!-- Booking Form -->
+            <form id="bookingForm" class="bookingForm">
+                <h3>Book this place</h3>
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="email" id="email" placeholder="Your Email" required>
+                <input type="text" id="phone" placeholder="Phone Number" required>
+                <textarea id="message" placeholder="Message (optional)"></textarea>
+                <div class="formActions">
+                    <button type="submit" class="primaryBtn">Submit Booking</button>
+                    <button type="button" class="secondaryBtn" id="closeModalSecondary">Cancel</button>
+                </div>
+            </form>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
-
 
     <script>
-        const adsData = {{ ads_json|safe }};
-        console.log(adsData);
+        // Make ads data available globally
+        window.adsData = {{ ads|tojson }};
     </script>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <!-- Load our modular JavaScript files -->
+    <script src="{{ url_for('static', filename='js/booking.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/listings.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ui.js') }}"></script>
 </body>
 </html>

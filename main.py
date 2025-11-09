@@ -323,7 +323,7 @@ class AdminPanel(tk.Tk):
         self.sidebar.bind("<Configure>", on_frame_configure)
 
         # --- Content frame ---
-        self.content_frame = tk.Frame(self, bg="#2F7688")
+        self.content_frame = tk.Frame(self, bg="white")
         self.content_frame.pack(side=tk.RIGHT, expand=True, fill=tk.BOTH)
 
         # --- Sidebar Logo ---

@@ -1,6 +1,7 @@
 const container = document.getElementById("adsContainer");
 const modal = document.getElementById("modal");
 const closeModal = document.getElementById("closeModal");
+const closeModalSecondary = document.getElementById("closeModalSecondary");
 const modalTitle = document.getElementById("modalTitle");
 const modalImage = document.getElementById("modalImage");
 const modalRent = document.getElementById("modalRent");
@@ -10,32 +11,67 @@ const bookingForm = document.getElementById("bookingForm");
 // Global variable to track selected ad
 let currentAdId = null;
 
-// Render ads
+// Render ads into styled cards
 adsData.forEach(ad => {
-    const card = document.createElement("div");
+    const card = document.createElement("article");
     card.className = "adCard";
+    card.tabIndex = 0;
+    // include title and location in searchable dataset, normalize type to lowercase
+    card.dataset.title = ((ad.title || '') + ' ' + (ad.location || '')).trim();
+    card.dataset.type = (ad.type || '').toLowerCase();
+    card.dataset.location = (ad.location || '');
+    card.dataset.category = (ad.category || '').toLowerCase();
+
     card.innerHTML = `
-        <img src="${ad.image_path}" alt="${ad.title}">
-        <h3>${ad.title}</h3>
-        <p>Rent: ৳${ad.rent}</p>
+        <img class="adImage" src="${ad.image_path}" alt="${ad.title}">
+        <div class="adBody">
+            <div class="cardRow">
+                <h3 class="adTitle">${ad.title}</h3>
+                <div class="priceBadge">৳${ad.rent}</div>
+            </div>
+            <div class="adMeta">${ad.location || ''}</div>
+            <p class="adDescription">${(ad.description || '').slice(0,120)}${(ad.description||'').length>120? '...':''}</p>
+        </div>
     `;
 
-    card.addEventListener("click", () => {
+    // If image fails to load, fall back to a known upload or a generic image
+    const imgEl = card.querySelector('.adImage');
+    if(imgEl){
+        imgEl.onerror = function(){
+            this.onerror = null;
+            this.src = '/static/uploads/edit.jpg';
+        }
+    }
+
+    // open modal on click or Enter
+    function openModal() {
         modal.style.display = "flex";
+        modal.setAttribute('aria-hidden','false');
         modalTitle.textContent = ad.title;
         modalImage.src = ad.image_path;
         modalRent.textContent = "Rent: ৳" + ad.rent;
         modalDescription.textContent = ad.description;
 
         currentAdId = ad.id; // Track which ad is clicked
-    });
+    }
+
+    card.addEventListener("click", openModal);
+    card.addEventListener("keydown", (e) => { if(e.key === 'Enter') openModal(); });
 
     container.appendChild(card);
 });
 
 // Close modal
-closeModal.addEventListener("click", () => modal.style.display = "none");
-window.addEventListener("click", e => { if(e.target === modal) modal.style.display = "none"; });
+function closeModalFn(){
+    modal.style.display = "none";
+    modal.setAttribute('aria-hidden','true');
+    currentAdId = null;
+}
+
+closeModal.addEventListener("click", closeModalFn);
+if(closeModalSecondary) closeModalSecondary.addEventListener('click', closeModalFn);
+window.addEventListener("click", e => { if(e.target === modal) closeModalFn(); });
+window.addEventListener('keydown', e => { if(e.key === 'Escape') closeModalFn(); });
 
 // Booking form submit
 bookingForm.addEventListener("submit", e => {

@@ -1,6 +1,6 @@
 from datetime import datetime
-from flask import Flask, jsonify, render_template, request
-import sqlite3, json
+from flask import Flask, jsonify, render_template, request, url_for
+import sqlite3, json, os
 
 
 from db_setup import DB_PATH
@@ -9,26 +9,54 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT id, type, title, rent, location, description, image_path FROM ads ORDER BY id DESC")
-    ads = cur.fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        # Use SELECT * so missing columns on older DBs won't raise errors
+        cur.execute("SELECT * FROM ads ORDER BY id DESC")
+        rows = cur.fetchall()
+        conn.close()
 
-    # Convert to JSON
-    ads_json = json.dumps([
-        {
-            "id": ad[0],
-            "type": ad[1],
-            "title": ad[2],
-            "rent": ad[3],
-            "location": ad[4],
-            "description": ad[5],
-            "image_path": ad[6]
-        } for ad in ads
-    ])
+        def image_url_from_db(path):
+            if not path:
+                return url_for('static', filename='uploads/edit.jpg')
+            if isinstance(path, str) and path.startswith('/'):
+                return path
+            base = os.path.basename(path)
+            return url_for('static', filename=f'uploads/{base}')
 
-    return render_template("ads.html", ads_json=ads_json)
+        ads = []
+        for r in rows:
+            # Use safe access for optional columns
+            keys = r.keys()
+            def g(k):
+                return r[k] if k in keys else None
+
+            ad = {
+                "id": g('id'),
+                "type": (g('type') or ''),
+                "category": (g('category') or ''),
+                "gender": (g('gender') or ''),
+                "title": (g('title') or ''),
+                "rent": (g('rent') or ''),
+                "location": (g('location') or ''),
+                "description": (g('description') or ''),
+                "image_path": image_url_from_db(g('image_path')),
+                "phone": (g('phone') or ''),
+                "email": (g('email') or ''),
+                "whatsapp": (g('whatsapp') or '')
+            }
+            ads.append(ad)
+
+        return render_template("ads.html", ads=ads)
+
+    except Exception as e:
+        # Log the exception to console for debugging and return an empty list to avoid 500
+        import traceback
+        print("Error in / route:", e)
+        traceback.print_exc()
+        return render_template("ads.html", ads=[])
 
 
 @app.route("/book_ad", methods=["POST"])
@@ -58,6 +86,52 @@ def book_ad():
     except Exception as e:
         print("Booking error:", e)
         return jsonify({"success": False, "error": str(e)})
+    
+
+@app.route('/api/ads', methods=['GET'])
+def api_ads():
+    try:
+        conn = sqlite3.connect(DB_PATH)
+        conn.row_factory = sqlite3.Row
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM ads ORDER BY id DESC")
+        rows = cur.fetchall()
+        conn.close()
+
+        def image_url_from_db(path):
+            if not path:
+                return url_for('static', filename='uploads/edit.jpg')
+            if isinstance(path, str) and path.startswith('/'):
+                return path
+            base = os.path.basename(path)
+            return url_for('static', filename=f'uploads/{base}')
+
+        ads = []
+        for r in rows:
+            keys = r.keys()
+            def g(k):
+                return r[k] if k in keys else None
+
+            ad = {
+                "id": g('id'),
+                "type": (g('type') or ''),
+                "category": (g('category') or ''),
+                "gender": (g('gender') or ''),
+                "title": (g('title') or ''),
+                "rent": (g('rent') or ''),
+                "location": (g('location') or ''),
+                "description": (g('description') or ''),
+                "image_path": image_url_from_db(g('image_path')),
+                "phone": (g('phone') or ''),
+                "email": (g('email') or ''),
+                "whatsapp": (g('whatsapp') or '')
+            }
+            ads.append(ad)
+
+        return jsonify(ads)
+    except Exception as e:
+        print('Error in /api/ads:', e)
+        return jsonify([])
     
     
 if __name__ == "__main__":

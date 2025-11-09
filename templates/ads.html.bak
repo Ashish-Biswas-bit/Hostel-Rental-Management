@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rent Ads</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>🏠 Rent Ads</h1>
+    <div id="adsContainer"></div>
+
+<div id="modal">
+  <div class="modalContent">
+    <span id="closeModal">&times;</span>
+    <img id="modalImage" src="" alt="">
+    <div class="modalText">
+        <h2 id="modalTitle"></h2>
+        <p id="modalRent"></p>
+        <p id="modalDescription"></p>
+        
+        <!-- Booking Form -->
+        <form id="bookingForm">
+            <h3>Booking Form</h3>
+            <input type="text" id="name" placeholder="Your Name" required><br>
+            <input type="email" id="email" placeholder="Your Email" required><br>
+            <input type="text" id="phone" placeholder="Phone Number" required><br>
+            <textarea id="message" placeholder="Message (optional)"></textarea><br>
+            <button type="submit">Submit Booking</button>
+        </form>
+    </div>
+  </div>
+</div>
+
+    <script>
+        const adsData = {{ ads_json|safe }};
+        console.log(adsData);
+    </script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
