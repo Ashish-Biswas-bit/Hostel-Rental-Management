@@ -83,7 +83,7 @@ class BookingManager {
             const data = await response.json();
             
             if(data.success) {
-                alert(`Thank you, ${formData.name}! Your booking has been submitted.`);
+                alert(`Thank you, ${formData.name}! Your booking has been submitted. Wait for confirmation email.`);
                 this.bookingForm.reset();
                 this.closeModalFn();
             } else {
