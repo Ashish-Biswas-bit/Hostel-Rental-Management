@@ -55,7 +55,7 @@ class DefaultPage(tk.Frame):
         super().__init__(parent, bg="white")
         self.search_query = search_query
 
-        self.title_label = tk.Label(self, text="Hostel Name- Hostel & Rent Management",
+        self.title_label = tk.Label(self, text="HomeFinder- Hostel & Rent Management",
                                     font=("Arial", 18, "bold"), bg="white", fg="#2c3e50")
         self.title_label.pack(pady=(20, 10))
 
@@ -84,7 +84,7 @@ class DefaultPage(tk.Frame):
 
 
         # Name
-        tk.Label(card, text="HOSTEL & RENT", font=("Segoe UI", 16, "bold"),
+        tk.Label(card, text="HomeFinder", font=("Segoe UI", 16, "bold"),
                 bg="#f9f9f9", fg="#2c3e50").pack(pady=4)
 
         # Title
@@ -95,7 +95,7 @@ class DefaultPage(tk.Frame):
         tk.Label(card, text="━" * 25, font=("Arial", 10), bg="#f9f9f9", fg="#ecf0f1").pack(pady=6)
 
         # Footer
-        footer = tk.Label(self, text="© 2025 Hostel Name | Version 1.0 | All rights reserved.",
+        footer = tk.Label(self, text="© 2025 HomeFinder | Version 1.0 | All rights reserved.",
                         font=("Segoe UI", 9), bg="white", fg="gray")
         footer.pack(side=tk.BOTTOM, pady=6)
 

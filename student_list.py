@@ -30,14 +30,33 @@ def fetch_student_details(student_id):
     return student_data, address_data
 
 def fetch_payment_history(student_id):
+    # Be tolerant: trim whitespace and also try LIKE matching if exact match fails
+    sid = str(student_id).strip()
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
-    cursor.execute("""
-        SELECT id, deposit, due, fine, advance, date 
-        FROM payment_history WHERE student_id=? ORDER BY date DESC
-    """, (student_id,))
-    data = cursor.fetchall()
-    conn.close()
+    try:
+        cursor.execute("""
+            SELECT id, deposit, due, fine, advance, date
+            FROM payment_history
+            WHERE TRIM(student_id)=? COLLATE NOCASE
+            ORDER BY date DESC
+        """, (sid,))
+        data = cursor.fetchall()
+
+        # If no rows found, also try a substring match (handles stored IDs with prefixes)
+        if not data:
+            cursor.execute("""
+                SELECT id, deposit, due, fine, advance, date
+                FROM payment_history
+                WHERE student_id LIKE ?
+                ORDER BY date DESC
+            """, (f"%{sid}%",))
+            data = cursor.fetchall()
+    except Exception as e:
+        print('Error fetching payment_history:', e)
+        data = []
+    finally:
+        conn.close()
     return data
 
 def fetch_photo_path(student_id):
