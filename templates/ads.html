@@ -23,7 +23,10 @@
                 <div class="navActions">
                     <a href="#" id="listPropertyBtn" class="ctaBtn">List Property</a>
                 </div>
-                <button class="menuBtn"><i class="fas fa-bars"></i></button>
+                                <button class="menuBtn" title="Open menu" aria-label="Open menu">
+                                    <i class="fas fa-bars"></i>
+                                    <span class="sr-only">Open menu</span>
+                                </button>
             </div>
         </nav>
 
@@ -44,18 +47,21 @@
                 <h1>Find Your Perfect Home</h1>
                 <p>Discover comfortable hostels and modern flats for rent</p>
                 <div class="searchBox">
+                    <label for="searchInput" class="sr-only">Search</label>
                     <input id="searchInput" class="search" type="search" placeholder="Search by location, title or features">
-                    <select id="filterSelect" class="filter">
+                    <label for="filterSelect" class="sr-only">Property Type</label>
+                    <select id="filterSelect" class="filter" title="Property Type">
                         <option value="">All Properties</option>
                         <option value="hostel">Hostel</option>
                         <option value="flat">Flat</option>
                     </select>
-                    <select id="genderSelect" class="filter">
+                    <label for="genderSelect" class="sr-only">Gender</label>
+                    <select id="genderSelect" class="filter" title="Gender">
                         <option value="">Any Gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
-                    <button class="searchBtn"><i class="fas fa-search"></i> Search</button>
+                    <button class="searchBtn" title="Search" aria-label="Search"><i class="fas fa-search"></i> Search</button>
                 </div>
                 <div class="hero-ctas">
                     <a href="#rent" class="btn btn-primary">Browse Listings</a>
@@ -198,9 +204,9 @@
                     <h3>🏠 HomeFinder</h3>
                     <p>Finding you the perfect place to call home.</p>
                     <div class="socialLinks">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="Facebook" aria-label="Facebook"><i class="fab fa-facebook"></i><span class="sr-only">Facebook</span></a>
+                        <a href="#" title="Twitter" aria-label="Twitter"><i class="fab fa-twitter"></i><span class="sr-only">Twitter</span></a>
+                        <a href="#" title="Instagram" aria-label="Instagram"><i class="fab fa-instagram"></i><span class="sr-only">Instagram</span></a>
                     </div>
                 </div>
                 <div class="footerCol">
@@ -260,7 +266,7 @@
 
     <script>
         // Make ads data available globally
-        window.adsData = {{ ads|tojson }};
+        window.adsData = {{ ads|tojson|safe }};
     </script>
 
     <!-- Load our modular JavaScript files -->
